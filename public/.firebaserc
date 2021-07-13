@@ -1,0 +1,16 @@
+{
+  "targets": {
+    "co-stars-qa": {
+      "hosting": {
+        "moviedb-spa": [
+          "co-stars-qa"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "staging": "co-stars-qa",
+    "default": "co-stars",
+    "prod": "co-stars"
+  }
+}

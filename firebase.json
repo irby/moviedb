@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "public": "public/dist/moviedb-spa",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}

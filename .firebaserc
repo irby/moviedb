@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "default": "co-stars",
+    "staging": "co-stars-qa",
+    "prod": "co-stars"
+  }
+}

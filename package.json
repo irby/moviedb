@@ -1,0 +1,11 @@
+{
+  "name": "my-project",
+  "version": "0.0.0",
+  "scripts": {
+    "api-run": "firebase use staging && firebase functions:config:set $(python functions/envreader.py dev) && firebase emulators:start",
+    "spa-run": "firebase use staging && pushd ./public && ng serve && popd",
+    "prod-deploy": "pushd ./public && ng build --prod && popd && firebase functions:config:set $(python functions/envreader.py prod) &&  firebase deploy -P prod",
+    "stage-deploy": "pushd ./public && ng build --configuration staging && popd && firebase functions:config:set $(python functions/envreader.py staging) && firebase deploy -P staging"
+  },
+  "private": true
+}
