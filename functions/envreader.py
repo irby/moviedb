@@ -20,16 +20,10 @@ if not(sys.argv[1] in allowedArguments):
     print("Argument not recognized. Exiting.")
     exit()
 
-# Grab the file associated to the argument supplied
-file = argumentFilePairs[sys.argv[1]]
+# Grab the file associated to the argument supplied. Replace path of argv[0] with name of file
+file = sys.argv[0].replace('envreader.py', argumentFilePairs[sys.argv[1]])
 
-isFound = os.path.exists(file)
-
-# If unable to find file, check under the functions directory (assuming this is running from the parent folder)
-if(isFound == False):
-    file = 'functions/'+file
-
-# If still unable to find the file, error and exit
+# If unable to find the file, error and exit
 if(os.path.exists(file) == False):
     print("Unable to find file associated with " + sys.argv[1])
     exit()
