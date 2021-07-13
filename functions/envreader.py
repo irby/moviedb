@@ -25,8 +25,14 @@ file = argumentFilePairs[sys.argv[1]]
 
 isFound = os.path.exists(file)
 
+# If unable to find file, check under the functions directory (assuming this is running from the parent folder)
 if(isFound == False):
     file = 'functions/'+file
+
+# If still unable to find the file, error and exit
+if(os.path.exists(file) == False):
+    print("Unable to find file associated with " + sys.argv[1])
+    exit()
 
 ret_str = ''
 
@@ -34,6 +40,7 @@ ret_str = ''
 with open(file) as json_file:
     data = json.load(json_file)
 
+    # We first start with the parent (project), and then loop through keys on that project
     for key1, value1 in data.iteritems():
         for key2, value2 in value1.iteritems(): 
             ret_str += str(key1) + "." + str(key2) + "=" + str(value2) + " "
