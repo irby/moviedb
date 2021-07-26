@@ -18,8 +18,10 @@ exports.searchPerson = async (req, res, next) => {
 
     await request(`https://api.themoviedb.org/3/search/person?api_key=${config.moviedb_api_key}&query=${name}&page=1`, function(error, response, body) {
 
+        const results = JSON.parse(body);
+
         if(!error && response.statusCode == 200) {
-            res.status(200).json(JSON.parse(body));
+            res.status(200).json(results.results.slice(0,4));
         } else {
             res.status(500).json({})
         }
