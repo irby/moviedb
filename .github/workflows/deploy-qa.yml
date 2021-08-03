@@ -28,6 +28,7 @@ jobs:
       run: |
         cd public
         npm install
+        npm install -g @angular/cli@latest
         ng build --configuration staging
     # Update configs and deploy to Firebase
     - name: Deploy to Firebase
