@@ -1,33 +1,68 @@
 
   <div>
     <mat-form-field appearance="fill">
-      <mat-label>Input</mat-label>
+      <mat-label>Enter Name of Actor</mat-label>
       <input type="text"
            placeholder="Pick one"
            matInput
            [formControl]="actorName"
            [matAutocomplete]="auto">
-           <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (onclick)="getActor($event)">
-              {{option.name}}
+           <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText">
+          <mat-option *ngFor="let result of filteredOptions | async" [value]="result" (onclick)="getActor($event)">
+              {{result.name}}
             </mat-option>
           </mat-autocomplete>
     </mat-form-field>
-    <ul>
-    <li *ngFor="let actor of actors">
-      {{actor.name}}
-    </li>
-    </ul>
+    <div>
+
+    <div fxLayout="row wrap" fxLayoutGap="5px">
+    <div *ngFor="let actor of actors">
+      <mat-card class="actor-card" title="{{actor.name}}">
+        <mat-card-header>
+          <mat-card-title>
+            {{actor.name.length > 17 ? actor.name.substring(0, 17) + "..." : actor.name}}
+          </mat-card-title>
+        </mat-card-header>
+        <img alt="{{actor.name}}" mat-card-image class="actor-image" src="https://image.tmdb.org/t/p/w200{{actor.profile_path}}">
+      <mat-card-actions class="actor-actions">
+        <button mat-icon-button-lg color="primary" (click)="deleteActor(actor.id)">
+          <mat-icon>
+            delete
+          </mat-icon>
+        </button>
+      </mat-card-actions>
+      </mat-card>
+      
+    </div>
   </div>
+</div>
 
-  <button mat-button type="button" [disabled]="actors.length < 2 && !postPending" (click)="test()">Find shared movies</button>
+  <div class="home-actions">
 
+  <button mat-raised-button color="primary" type="button" [disabled]="actors.length < 2 || isSearchPending" (click)="findMatchedMovies()">Find shared movies</button>
+  <button mat-raised-button class="tool-button" type="button" (click)="clear()">Clear</button>
+
+  <div class="result-section">
   <div *ngIf="matchedMovies.length > 0">
   Movies they have appeared in together:
 
-  <ul>
-    <li *ngFor="let movie of matchedMovies">
-      {{movie.title}}
-    </li>
-    </ul>
+  <div fxLayout="row wrap" fxLayoutGap="5px">
+    <div *ngFor="let movie of matchedMovies">
+      <mat-card class="movie-card" title="{{movie.title}} {{parseYear(movie.release_date)}}">
+        <mat-card-header>
+          <mat-card-title>
+            {{movie.title.length > 17 ? movie.title.substring(0, 17) + "..." : movie.title}} ({{parseYear(movie.release_date)}})
+          </mat-card-title>
+        </mat-card-header>
+        <img alt="{{movie.title}}" mat-card-image class="movie-image" src="https://image.tmdb.org/t/p/w200{{movie.poster_path}}">
+      </mat-card>
+      
+    </div>
   </div>
+  </div>
+
+  <div *ngIf="movieMatchCompleted && matchedMovies.length == 0">
+    No movie matches found
+  </div>
+  
+  </div> 

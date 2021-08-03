@@ -1,0 +1,37 @@
+name: Deploy to QA
+
+on:
+  push:
+    branches:
+      - qa/*
+
+jobs:
+  deploy_qa_function:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+    - name: Copy the composites into function folder
+      run: npm run composite-build
+    # Runs a single command using the runners shell
+    # And of course we need to goto our functions folder to deploy
+    - name: Install npm packages (functions)
+      run: |
+        cd functions
+        npm install
+    - name: Install npm packages (web)
+      run: |
+        cd public
+        npm install
+        ng build --configuration staging
+    # Update configs and deploy to Firebase
+    - name: Deploy to Firebase
+      uses: w9jds/firebase-action@master
+      with:
+        args: functions:config:set ${{ secrets.FIREBASE_FUNCTIONS_ENV_VARIABLES }} ; firebase deploy
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        PROJECT_ID: co-stars-qa

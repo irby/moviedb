@@ -29,7 +29,7 @@ exports.searchMovieMatches = async (req, res, next) => {
             continue;
         }
         
-        await request(`https://api.themoviedb.org/3/person/${id}/movie_credits?api_key=${config.moviedb_api_key}`).then(res => {
+        await request(`${config.moviedb_api_url}3/person/${id}/movie_credits?api_key=${config.moviedb_api_key}`).then(res => {
             let result = JSON.parse(res);
 
             // Store the movie ID, the movie information and the actor ID into an array
@@ -93,7 +93,7 @@ exports.searchMovieById = async (req, res, next) => {
         return;
     }
 
-    await request(`https://api.themoviedb.org/3/movie/${id}?api_key=${config.moviedb_api_key}`).then(resp => {
+    await request(`${config.moviedb_api_url}3/movie/${id}?api_key=${config.moviedb_api_key}`).then(resp => {
         res.status(200).json(JSON.parse(resp));
     }).catch(err => {
         res.status(500).json({
