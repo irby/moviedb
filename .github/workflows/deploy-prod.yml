@@ -1,0 +1,46 @@
+name: Deploy to Prod
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  deploy_qa_function:
+    environment:
+      name: Prod
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+    - name: Use Node.js 14 LTS
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+    # Runs a single command using the runners shell
+    # And of course we need to goto our functions folder to deploy
+    - name: Install npm packages (functions)
+      run: |
+        cd functions
+        npm install
+    - name: Install npm packages (web)
+      run: |
+        cd public
+        npm install
+        npm install -g @angular/cli@latest
+        npm i @angular/cdk @angular/material @angular/flex-layout @angular/animations @angular/forms
+        ng build --prod
+    # Update configs and deploy to Firebase
+    - name: Deploy to Firebase
+      uses: w9jds/firebase-action@master
+      with:
+        args: functions:config:set ${{ secrets.FIREBASE_FUNCTIONS_ENV_VARIABLES }} ; firebase deploy
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        PROJECT_ID: co-stars
