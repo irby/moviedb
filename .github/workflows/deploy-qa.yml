@@ -29,6 +29,7 @@ jobs:
         cd public
         npm install
         npm install -g @angular/cli@latest
+        npm i @angular/cdk @angular/material @angular/flex-layout @angular/animations @angular/forms
         ng build --configuration staging
     # Update configs and deploy to Firebase
     - name: Deploy to Firebase
