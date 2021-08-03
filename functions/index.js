@@ -12,22 +12,34 @@ const e = require('express');
 
 const app = express();
 
-app.use(cors({origin: true}));
+var allowedOrigins = functions.config().moviedb.cors_allowed_origins.split(",");
 
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({extended:false}));
+var corsOptions = {
+    origin: function(origin, callback) {
+        if(allowedOrigins[0] === "*" || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"))
+        }
+    }
+}
+
+app.use(cors(corsOptions));
 
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    const origin = req.headers.origin;
+
+    if(allowedOrigins[0] === "*") {
+        res.setHeader('Access-Control-Allow-Origin', allowedOrigins[0]);
+    } else if(allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    }
+
     res.setHeader('Access-Control-Allow-Headers', 'Host, Referer, User-Agent, Origin, Access-Control, Allow-Origin, Content-Type, Accept, Authorization, Origin, Accept-Encoding, Accept-Language, X-Requested-With, Access-Control-Request-Method, Access-Control-Request-Header');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
 
     next();
 });
-
-// app.get('/', (request, response) => {
-//     response.status(200).json({message: "Hello from Firebase!!!"});
-// });
 
 app.use('/person', personRoutes);
 app.use('/movies', movieRoutes);

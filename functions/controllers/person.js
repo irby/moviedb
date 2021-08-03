@@ -16,7 +16,7 @@ exports.searchPerson = async (req, res, next) => {
     // Remove any special characters
     name = name.replace(/[&\/\\#,+()$~%.'":;*?<>{}]/g,'');
 
-    await request(`https://api.themoviedb.org/3/search/person?api_key=${config.moviedb_api_key}&query=${name}&page=1`, function(error, response, body) {
+    await request(`${config.moviedb_api_url}3/search/person?api_key=${config.moviedb_api_key}&query=${name}&page=1`, function(error, response, body) {
 
         const results = JSON.parse(body);
 
@@ -45,7 +45,7 @@ exports.getPerson = async (req, res, next) => {
         return;
     }
 
-    await request(`https://api.themoviedb.org/3/person/${id}?api_key=${config.moviedb_api_key}`, function (error, response, body) {
+    await request(`${config.moviedb_api_url}3/person/${id}?api_key=${config.moviedb_api_key}`, function (error, response, body) {
         if(!error && response.statusCode == 200) {
             res.status(200).json(JSON.parse(body));
         } else {

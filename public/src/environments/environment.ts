@@ -4,7 +4,8 @@
 
 export const environment = {
   name: "Dev",
-  production: false
+  production: false,
+  apiUrl: "http://localhost:5001/co-stars-qa/us-central1/api/"
 };
 
 /*
