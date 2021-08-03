@@ -1,4 +1,5 @@
-[![example workflow](https://github.com/irby/moviedb/actions/workflows/deploy-qa.yml/badge.svg)](https://github.com/irby/moviedb/actions)
+[![example workflow](https://github.com/irby/moviedb/actions/workflows/deploy-qa.yml/badge.svg)](https://github.com/irby/moviedb/actions/workflows/deploy-qa.yml)
+[![example workflow](https://github.com/irby/moviedb/actions/workflows/deploy-prod.yml/badge.svg)](https://github.com/irby/moviedb/actions/workflows/deploy-prod.yml)
 
 # Co-Stars
 ### Find out which movies actors have starred in together
